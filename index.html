@@ -30,14 +30,56 @@
     <meta name="x5-fullscreen" content="true"/>
     <meta name="360-fullscreen" content="true"/>
 
+    <style>
+        body, canvas, div {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+        #orietation_img img {
+            vertical-align: middle;
+            width:291px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+        #orietation_img {
+            position:absolute;
+            top:0; right:0;
+            bottom:0; left:0;
+        }
+        #orietation_imgs img {
+            vertical-align: middle;
+            width:151px;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
 
+        #orietation_imgs {
+            position:absolute;
+            top:0; right:0;
+            bottom:0; left:0;
+        }
+
+    </style>
 </head>
-<body style="padding:0; margin: 0; background: #FF0000;overflow:hidden;">
-<div>
-test 3
-
-add twitter
-
+<body style="padding:0; margin: 0; background: #6fcdc1;">
+<script src="libs/loading.js"></script>
+<canvas id="gameCanvas" width="100" height="100"></canvas>
+<div id="orietation_img" style="text-align:center; background: #000000; display:none">
+    <img src="res/icons/00_benriy_57.png">
+</div>
+<div id="orietation_imgs" style="text-align:center; background: #000000; display:none">
+    <img src="res/icons/00_benriy_57.png">
 </div>
 </body>
 </html>
