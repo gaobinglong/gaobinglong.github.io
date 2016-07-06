@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="res/icons/00_benriy_171.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="res/icons/00_benriy_114.png">
     <meta property="og:image" content="res/icons/00_benriy_256.png" />
-    <meta property="og:title" content="ペンライト、ネオンサインから選べるよ"/>
+    <meta property="og:title" content="1111"/>
     <meta name="viewport">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui">
     <!--<meta name="apple-mobile-web-app-capable" content="yes"/>-->
@@ -27,7 +27,7 @@
 </head>
 <body style="padding:0; margin: 0; background: #FF0000;overflow:hidden;">
 <div>
-test 8
+test 9
 
 </div>
 
@@ -37,13 +37,57 @@ test 8
 </script>
  <script>
       function clicke(){
-         alert("事件");
+      	
+      	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
+    if(precomposedElementsFacebookCon){
+        for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
+            var currentElement = precomposedElementsFacebookCon[i];
+            currentElement.content = "res/icons/01_fun_256.png";
+        }
+    }
+
+    var precomposedElementsFacebookTitle = document.querySelectorAll("meta[property='og:title']");
+    if(precomposedElementsFacebookTitle){
+        for (var i =0; i < precomposedElementsFacebookTitle.length;i++) {
+            var currentElement = precomposedElementsFacebookTitle[i];
+            currentElement.content = "22222";
+        }
+    }
+      	
+      	
+      	History.replaceState({state:1}, "test1", "?state=5"+1);
+         
      }
+     
+     
+     
+     function clicke1(){
+      	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
+    if(precomposedElementsFacebookCon){
+        for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
+            var currentElement = precomposedElementsFacebookCon[i];
+            currentElement.content = "res/icons/00_benriy_256.png";
+        }
+    }
+
+    var precomposedElementsFacebookTitle = document.querySelectorAll("meta[property='og:title']");
+    if(precomposedElementsFacebookTitle){
+        for (var i =0; i < precomposedElementsFacebookTitle.length;i++) {
+            var currentElement = precomposedElementsFacebookTitle[i];
+            currentElement.content = "1111";
+        }
+    }
+      	
+      	
+      	History.replaceState({state:1}, "test1", "?state=5");
+         
+     }
+     
    </script>
  <table>
     <tr>
        <td><input type="button" onClick="clicke()" value="Button1"/></td>
-       <td><input type="button"  value="Button2"/></td>
+       <td><input type="button" onClick="clicke1()" value="Button2"/></td>
     </tr>
   </table>
 </body>
