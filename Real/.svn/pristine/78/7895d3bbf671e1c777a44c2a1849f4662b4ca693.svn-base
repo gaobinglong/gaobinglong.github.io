@@ -1,0 +1,49 @@
+/**
+ * Created by shuang on 15. 12. 23..
+ */
+
+(function detectRotation(global) {
+
+    var previousWidth = global.innerWidth;
+    var previousHeight = global.innerHeight;
+
+    var onResize = function () {
+        //alert("width = " + global.innerWidth + "height = " + global.innerHeight);
+        // iPhone6 : 667*375
+        //           375*559
+        console.log( window.innerWidth  +"::"+ window.innerHeight);
+        if (cc.sys.isMobile) {
+            if ((cc.sys.os == cc.sys.OS_ANDROID && previousWidth != global.innerWidth) ||
+                (cc.sys.os == cc.sys.OS_IOS && previousHeight != global.innerHeight)) {
+                previousWidth = global.innerWidth;
+                previousHeight = global.innerHeight;
+                if(Utility.isFromLandscape == 1){
+                    Utility.isFromLandscape = 0;
+                    setTimeout(function () {
+                        location.reload();
+                    }, 150);
+                }else if (global.innerWidth < global.innerHeight) {
+                    // portrait
+                        cc.director.setNextDeltaTimeZero(true);
+                        if(Utility){
+                            Utility.swapToGame();
+                            //setTimeout(function () {
+                            //    Utility.setDesignSizePortrait();
+                            //}, 150);
+                        }
+                } else {
+                    //landscape
+                    if(Utility)
+                        Utility.swapToRotationImg();
+                }
+            }
+        }
+    };
+
+    global.addEventListener("resize", onResize, false);
+    //global.addEventListener('orientationchange', onResize);
+
+    //(optional) Android doesn't always fire orientationChange on 180 degree turns
+    //   setInterval(onOrientationChange, 2000);
+
+})(window);

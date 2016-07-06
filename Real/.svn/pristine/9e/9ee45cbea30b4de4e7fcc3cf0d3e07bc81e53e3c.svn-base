@@ -1,0 +1,146 @@
+/**
+ * Created by nhnst on 11/27/15.
+ */
+var MainModeBtn = cc.Node.extend({
+    TAG_MASK:1,
+    TAG_Sim:2,
+    TAG_Setting:3,
+    SimText:null,
+    SimTextSub:null,
+    SimSelector:null,
+    SettingText:null,
+    SettingTextSub:null,
+    SettingSelector:null,
+    ResSimple:null,
+    ResSetting:null,
+    ctor:function(simSelector,settingSelector,resMain,strSetting,strSettingSub,resSetting,strSimple,strSimpleSub,resSimple){
+        this._super();
+
+        this.SimText = strSimple;
+        this.SimTextSub = strSimpleSub;
+        this.SettingText = strSetting;
+        this.SettingTextSub = strSettingSub;
+
+        this.SimSelector = simSelector;
+
+        this.SettingSelector = settingSelector;
+
+        this.ResSimple = resSimple;
+
+        this.ResSetting = resSetting;
+
+        var mask = new Mask();
+        mask.setTag(this.TAG_MASK);
+        mask.close();
+        this.addChild(mask);
+
+        var close_layout = new ccui.Layout();
+        close_layout.setContentSize(cc.winSize.width, cc.winSize.height);
+        close_layout.setAnchorPoint(0, 0);
+        close_layout.setTag(4);
+        close_layout.setTouchEnabled(false);
+        close_layout.addTouchEventListener(function(){
+                if(mode_Btn.getChildrenCount() != 0){
+                    var simple_play_btn = mode_Btn.getChildByTag(1);
+                    var setting_play_btn = mode_Btn.getChildByTag(2);
+                    var func = function(){
+                        mode_Btn.removeAllChildrenWithCleanup(true);
+                        mask.close();
+                    };
+                    simple_play_btn.runAction(new cc.Sequence(new cc.MoveBy(0.2,cc.p(0, -380)), new cc.callFunc(func, this)));
+                    setting_play_btn.runAction(new cc.MoveBy(0.2,cc.p(0, -222)));
+                    close_layout.setTouchEnabled(false);
+                }
+        });
+        this.addChild(close_layout);
+
+        var mode_Btn = new ccui.Button(resMain,resMain);
+        mode_Btn.setAnchorPoint(cc.p(1, 0));
+        mode_Btn.setPosition(cc.p(cc.winSize.width - 22, 30));
+        var _this = this;
+        mode_Btn.addClickEventListener(function(){_this.settingBtnAnim(mode_Btn);});
+        this.addChild(mode_Btn);
+
+        return true;
+    },
+
+    settingBtnAnim:function(node){
+        var simple_play_btn;
+        var setting_play_btn;
+        var _w = node.getBoundingBox().width;
+        var _h = node.getBoundingBox().height;
+        var simpleMoveY = 380;
+        var settingMoveY = 222;
+        if(node.getChildrenCount() == 0){
+            node.getParent().getChildByTag(4).setTouchEnabled(true);
+            node.setTouchEnabled(false);
+            this.getChildByTag(this.TAG_MASK).open();
+
+            simple_play_btn = new ccui.Button(this.ResSimple);
+            simple_play_btn.setTag(1);
+            simple_play_btn.setAnchorPoint(cc.p(0.5, 0.5));
+            simple_play_btn.setPosition(_w/2, _h/2);
+            simple_play_btn.addClickEventListener(this.SimSelector);
+
+            var simple_play_text = new cc.LabelTTF(this.SimText);
+            simple_play_text.setFontName(GAME_FONT.PRO_W3);
+            simple_play_text.setFontSize(36);
+            simple_play_text.setFontFillColor(cc.color(255,243,191));
+            simple_play_text.setScanPhixelRGB();
+            simple_play_text.setAnchorPoint(1, 0);
+            simple_play_text.setPosition(-20, simple_play_btn.getContentSize().height/2);
+            simple_play_btn.addChild(simple_play_text);
+            var simple_play_text_p = new cc.LabelTTF(this.SimTextSub);
+            simple_play_text_p.setFontName(GAME_FONT.PRO_W3);
+            simple_play_text_p.setFontSize(28);
+            simple_play_text_p.setFontFillColor(cc.color("#6fcdc1"));
+            simple_play_text_p.setScanPhixelRGB();
+            simple_play_text_p.setAnchorPoint(1, 1);
+            simple_play_text_p.setPosition(-20, simple_play_btn.getContentSize().height/2);
+            simple_play_btn.addChild(simple_play_text_p);
+
+            var action = new cc.Sequence(new cc.MoveBy(0.2,cc.p(0, simpleMoveY)),
+                new cc.callFunc(function(){node.setTouchEnabled(true);}, this));
+            simple_play_btn.runAction(action);
+
+            node.addChild(simple_play_btn);
+            var setting_play_btn = new ccui.Button(this.ResSetting);
+            setting_play_btn.setAnchorPoint(cc.p(0.5, 0.5));
+            setting_play_btn.setTag(2);
+            setting_play_btn.setPosition(_w/2, _h/2);
+            setting_play_btn.addClickEventListener(this.SettingSelector);
+
+            var setting_play_text = new cc.LabelTTF(this.SettingText);
+            setting_play_text.setFontName(GAME_FONT.PRO_W3);
+            setting_play_text.setFontSize(36);
+            setting_play_text.setFontFillColor(cc.color(255,243,191));
+            setting_play_text.setScanPhixelRGB();
+            setting_play_text.setAnchorPoint(1, 0);
+            setting_play_text.setPosition(-20, setting_play_btn.getContentSize().height/2);
+            setting_play_btn.addChild(setting_play_text);
+            var setting_play_text_p = new cc.LabelTTF(this.SettingTextSub);
+            setting_play_text_p.setFontName(GAME_FONT.PRO_W3);
+            setting_play_text_p.setFontSize(28);
+            setting_play_text_p.setFontFillColor(cc.color("#6fcdc1"));
+            setting_play_text_p.setScanPhixelRGB();
+            setting_play_text_p.setAnchorPoint(1, 1);
+            setting_play_text_p.setPosition(-20, setting_play_btn.getContentSize().height/2);
+            setting_play_btn.addChild(setting_play_text_p);
+
+            action = new cc.MoveBy(0.2,cc.p(0, settingMoveY));
+            setting_play_btn.runAction(action);
+            node.addChild(setting_play_btn);
+        }else{
+            simple_play_btn = node.getChildByTag(1);
+            setting_play_btn = node.getChildByTag(2);
+            var func = function(){
+                node.removeAllChildrenWithCleanup(true);
+                node.getParent().getChildByTag(node.getParent().TAG_MASK).close();
+            };
+            simple_play_btn.runAction(new cc.Sequence(new cc.MoveBy(0.2,cc.p(0, -simpleMoveY/2)), new cc.callFunc(func, this)));
+            setting_play_btn.runAction(new cc.MoveBy(0.2,cc.p(0, -settingMoveY/2)));
+            node.getParent().getChildByTag(4).setTouchEnabled(false);
+        }
+    }
+
+});

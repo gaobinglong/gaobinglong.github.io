@@ -1,0 +1,73 @@
+﻿/**
+ * Created by shuang on 15. 12. 23..
+ */
+
+(function detectRotation(global) {
+
+    var previousWidth = global.innerWidth;
+    var previousHeight = global.innerHeight;
+
+    var onResize = function () {
+        //console.log( window.innerWidth  +"::"+ window.innerHeight+
+        //"å±å¹åè¾¨ççé«ï¼"+window.screen.height
+        //+":\n"+
+        //"å±å¹åè¾¨ççå®½ï¼"+window.screen.width
+        //+":\n"+
+        //"å±å¹å¯ç¨å·¥ä½åºé«åº¦ï¼"+window.screen.availHeight
+        //+":\n"+
+        //"å±å¹å¯ç¨å·¥ä½åºå®½åº¦ï¼"+window.screen.availWidth);
+        if (cc.sys.isMobile) {
+            if ((cc.sys.os == cc.sys.OS_ANDROID && previousWidth != global.innerWidth) ||
+                (cc.sys.os == cc.sys.OS_IOS && previousHeight != global.innerHeight)) {
+                previousWidth = global.innerWidth;
+                previousHeight = global.innerHeight;
+                if(Utility.isFromLandscape == 1){//æ¸¸ææ¨ªå±è¿å¥æ¶ï¼éæ°å è½½
+                    Utility.isFromLandscape = 0;
+                    setTimeout(function () {
+                        location.reload();
+                    }, 150);
+                }else {
+                    if(Utility.isPortrait.state > 0 && Utility.isPortrait.state != 3){
+                        if(Utility.isPortrait.sW2 == null){
+                            if (global.innerWidth < global.innerHeight) {
+                                Utility.isPortrait.state = 1;
+                            } else {
+                                Utility.isPortrait.state = 2;
+                            }
+                        }else{
+                            if(Utility.isPortrait.sW2 == global.innerWidth && (Math.abs(Utility.isPortrait.sH2 - global.innerHeight)<= 54)/*bar é«åº¦*/){
+                                Utility.isPortrait.state = 2;
+                            }else{
+                                Utility.isPortrait.state = 1;
+                            }
+                        }
+
+                    }else{
+                        if (global.innerWidth < global.innerHeight) {
+                            // portrait
+                            cc.director.setNextDeltaTimeZero(true);
+                            if(Utility){
+                                Utility.swapToGame();
+                                setTimeout(function () {
+                                    //cc.view.setDesignResolutionSize(750, 1334 - 108, cc.ResolutionPolicy.FIXED_WIDTH);
+                                }, 150);
+                            }
+                        } else {
+                            //landscape
+                            if(Utility)
+                                Utility.swapToRotationImg();
+                        }
+                    }
+                }
+
+            }
+        }
+    };
+
+    global.addEventListener("resize", onResize, false);
+    //global.addEventListener('orientationchange', onResize);
+
+    //(optional) Android doesn't always fire orientationChange on 180 degree turns
+    //   setInterval(onOrientationChange, 2000);
+
+})(window);

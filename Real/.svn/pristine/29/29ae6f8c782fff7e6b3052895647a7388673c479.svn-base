@@ -1,0 +1,233 @@
+/**
+ * Created by dyfox on 15-11-3.
+ */
+var mainView;
+var GAME_TYPE = {
+    MajorityVote:{name:"多数決", enable:true},
+    Sortilege:{name:"くじ引き", enable:true},
+    GhostLeg:{name:"あみだくじ", enable:true},
+    RussianRoulette:{name:"ロシアンルーレット", enable:true},
+    ADDutchpay:{name:"お勘定・天国と地獄", enable:true},
+    LoveRedLine:{name:"運命の赤い糸", enable:true},
+    Polygraph:{name:"うそ発見器", enable:true},
+    Grouping:{name:"チーム分け", enable:true}
+    //Test:{name:"common", enable:true},
+};
+
+//Global Functions
+
+var ANAGLE = function(startx, starty, endx, endy)
+{
+
+    //除数不能为0
+    var tan = Math.atan(Math.abs((endy - starty) / (endx - startx))) * 180 / 3.1415926;
+    if (endx >= startx && endy >= starty)//第一象限
+    {
+        return -tan;
+    }
+    else if (endx >= startx && endy < starty)//第二象限
+    {
+        return tan;
+    }
+    else if (endx < startx && endy >= starty)//第三象限
+    {
+        return tan - 180;
+    }
+    else
+    {
+        return 180 - tan;
+    }
+
+};
+
+var POINT_IN_RECT = function(point, rect){
+    if(point.x>=rect.x&&point.x<=rect.x+rect.width && point.y>=rect.y&&point.y<=rect.y+rect.height){
+        return true;
+    }
+    return false;
+};
+
+function PAD(num, n) {
+    var y="00000000000000000000000000000"+num;
+    return y.substr(y.length-n);
+};
+
+function getRandomInt(min,max){// min <= get < max
+    var rand = Math.floor(Math.random()*(max - min) + min);
+    return rand;
+};
+
+var GAME_FONT = {
+    PRO_W6:"HiraKakuProN-W6",
+    PRO_W3:"HiraKakuProN-W3",
+    AZUSA:"AzusaHyuga"
+    //PRO_W6:"res/Font/ヒラギノ角ゴ Pro W3.OTF",
+    //PRO_W3:"res/Font/ヒラギノ角ゴ Pro W6.OTF"
+};
+
+function ADD_CHANGESTATE_CALLBACK(cb, context){
+    window.changeState_cb = cb;
+    window.changeState_context = context;
+};
+
+function setPushState(){
+    if(window.sessionStorage.getItem("firstStart") != 1){//已push过的就不再push
+        window.sessionStorage.setItem("firstStart", 1);
+        History.pushState({state:1}, "便利屋", "?state=benriya");
+    }else{//已经push过的就不用再push
+        var benriyaStr = "?state=benriya";
+        var pageStr = History.getPageUrl();
+        var allLength = pageStr.length;
+        if(pageStr.substr(allLength - 1,1) === "/"){//去掉最后带的斜杠的服务器名字
+            pageStr = pageStr.substr(0,allLength - 1);
+            allLength = pageStr.length;
+        }
+        var bLength = benriyaStr.length;
+        var subStr = pageStr.substr(allLength - bLength,bLength);
+        if(subStr != benriyaStr)
+            History.pushState({state:1}, "便利屋", benriyaStr);
+    }
+};
+
+function setCallBackListener(add){
+    var errorCallback = function (e) {
+        if(e.state == null){
+            History.go(1);
+            if(window.changeState_cb)
+                window.changeState_cb(window.changeState_context);
+        }
+    };
+    if(add)
+        window.addEventListener('popstate', errorCallback, false);
+    else
+        window.removeEventListener('popstate', errorCallback, false);
+};
+
+function ROCK_PHONE() {
+    //摇一摇
+    var SHAKE_THRESHOLD = 3000;
+    var last_update = 0;
+    var x = y = z = last_x = last_y = last_z = 0;
+    function init() {
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', deviceMotionHandler, false);
+        } else {
+            alert('not support mobile event');
+        }
+    }
+    function deviceMotionHandler(eventData) {
+        var acceleration = eventData.accelerationIncludingGravity;
+        var curTime = new Date().getTime();
+        if ((curTime - last_update) > 100) {
+            var diffTime = curTime - last_update;
+            last_update = curTime;
+            x = acceleration.x;
+            y = acceleration.y;
+            z = acceleration.z;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+            if (speed > SHAKE_THRESHOLD) {
+                alert("摇动了");
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+};
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//EXACT_FIT
+//var initWidthScreen = function(view){
+//    mainView = view;
+//    var _sSize = cc.director.getWinSize();
+//    var _sScale = _sSize.width/_sSize.height;
+//    var _sScale1 = _sSize.height/_sSize.width;
+//    if( window.orientation == 90 || window.orientation == -90 ) {
+//        //alert("横屏");
+//        currentLayerView.setRotation(270,0);
+//        currentLayerView.setScale(_sScale1,_sScale);
+//    }
+//
+//};
+//var setWidthScrren = function(view){
+//    var _sSize = cc.director.getWinSize();
+//    var _sScale = _sSize.width/_sSize.height;
+//    var _sScale1 = _sSize.height/_sSize.width;
+//    if ( window.orientation == 180 || window.orientation==0 ) {
+//        currentLayerView.setRotation(270,0);
+//        currentLayerView.setScale(_sScale1,_sScale);
+//    }
+//    if( window.orientation == 90 || window.orientation == -90 ) {
+//        currentLayerView.setRotation(0,0);
+//        currentLayerView.setScale(1,1);
+//    }
+//};
+//NO_BORDER
+//var initWidthScreen = function(view){
+//    mainView = view;
+//    var _sSize = cc.director.getWinSize();
+//    var _sScale = _sSize.width/_sSize.height;
+//    var _hScale = window.innerHeight/(window.innerHeight);//108
+//    if( window.orientation == 90 || window.orientation == -90 ) {
+//        //alert("横屏");
+//        currentLayerView.setRotation(270,0);
+//        currentLayerView.setScale(_sScale,_sScale);
+//    }
+//    if ( window.orientation == 180 || window.orientation==0 ) {
+//        //alert("竖屏");
+//        currentLayerView.setRotation(0,0);
+//        currentLayerView.setScale(_hScale,_hScale);
+//    }
+//
+//};
+//
+//var setWidthScrren = function(){
+//    var _sSize = cc.director.getWinSize();
+//    var _sScale = _sSize.width/_sSize.height;
+//    var _hScale = window.innerHeight/(window.innerHeight);
+//    //window.addEventListener('orientationchange', function(event){
+//        if ( window.orientation == 180 || window.orientation==0 ) {
+//            //alert("横屏");
+//            currentLayerView.setRotation(270,0);
+//            currentLayerView.setScale(_sScale,_sScale);
+//        }
+//        if( window.orientation == 90 || window.orientation == -90 ) {
+//            //alert("竖屏");
+//            currentLayerView.setRotation(0,0);
+//            currentLayerView.setScale(_hScale,_hScale);
+//        }
+//    //});
+//};
+
+/*照相机
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript">
+        function preImg(sourceId, targetId) {
+            if (typeof FileReader === 'undefined') {
+                alert('Your browser does not support FileReader...');
+                return;
+            }
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var img = document.getElementById(targetId);
+                img.src = this.result;
+            }
+            reader.readAsDataURL(document.getElementById(sourceId).files[0]);
+        }
+        </script>
+        </head>
+        <body>
+        <form action="">
+        <input type="file" name="imgOne" id="imgOne" onchange="preImg(this.id,'imgPre');" />
+        <img id="imgPre" src="" style="display: block;" />
+        </form>
+        </body>
+        </html>
+*/
+

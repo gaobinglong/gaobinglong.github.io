@@ -1,0 +1,37 @@
+﻿/**
+ * Created by dyfox on 15-11-3.
+ */
+var mainView;
+var GAME_TYPE = {
+    //���J��
+    SoundEffects:{name:"おもしろ効果音", enable:true,gameid:"benriya_omosiro"},
+    MajorityVote:{name:"多数決", enable:true,gameid:"benriya_tasuuketu"},
+    Sortilege:{name:"くじ引き", enable:true,gameid:"benriya_kuji"},
+    GhostLeg:{name:"あみだくじ", enable:true,gameid:"benriya_amida"},
+    RussianRoulette:{name:"ロシアンルーレット", enable:true,gameid:"benriya_russian"},
+    ADDutchpay:{name:"お勘定・天国と地獄", enable:true,gameid:"benriya_kannjyou"},
+    LoveRedLine:{name:"運命の赤い糸", enable:true,gameid:"benriya_unmei"},
+    Polygraph:{name:"うそ発見器", enable:true,gameid:"benriya_uso"},
+    Grouping:{name:"チーム分け", enable:true,gameid:"benriya_team"}
+    //���J��
+    //PitapatBomb:{name:"ドキドキ爆弾ゲーム", enable:true,gameid:"benriya_dokidoki"},
+
+    //Lighting:{name:"照明セット", enable:true,gameid:"benriya_syoumei"}
+    //Test:{name:"common", enable:true},
+};
+
+var GAME_FONT = {
+    PRO_W6:"HiraKakuProN-W6",
+    PRO_W3:"HiraKakuProN-W3",
+    AZUSA:"AzusaHyuga"
+};
+
+function PAD(num, n) {
+    var y="00000000000000000000000000000"+num;
+    return y.substr(y.length-n);
+};
+
+function ADD_CHANGESTATE_CALLBACK(cb, context){
+    window.changeState_cb = cb;
+    window.changeState_context = context;
+};
