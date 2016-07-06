@@ -27,16 +27,18 @@
 </head>
 <body style="padding:0; margin: 0; background: #FF0000;overflow:hidden;">
 <div>
-test 9
+test 10
 
 </div>
 
 <script>
-	History.pushState({state:1}, "test1", "?state=6");
+	History.pushState({state:1}, "test1", "?state=7");
 	
 </script>
  <script>
       function clicke(){
+      	
+      	History.replaceState({state:1}, "test1", "?state=7"+1);
       	
       	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
     if(precomposedElementsFacebookCon){
@@ -55,13 +57,16 @@ test 9
     }
       	
       	
-      	History.replaceState({state:1}, "test1", "?state=6"+1);
+      	
          
      }
      
      
      
      function clicke1(){
+     	
+     	History.replaceState({state:1}, "test1", "?state=7");
+     	
       	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
     if(precomposedElementsFacebookCon){
         for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
@@ -79,7 +84,7 @@ test 9
     }
       	
       	
-      	History.replaceState({state:1}, "test1", "?state=6");
+      	
          
      }
      
