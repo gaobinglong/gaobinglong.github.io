@@ -31,11 +31,30 @@
 </head>
 <body style="padding:0; margin: 0; background: #FF0000;overflow:hidden;">
 <div>
-test 19
+test 20
 
 </div>
 <script>
-	History.pushState({state:1}, "test1", "?state=19");
+	History.pushState({state:1}, "test1", "?state=20");
+	
+	
+      	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
+    if(precomposedElementsFacebookCon){
+        for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
+            var currentElement = precomposedElementsFacebookCon[i];
+            currentElement.content = "http://minigame.hangame.co.jp/benriya/enter/../res/icons/01_fun_256.png";
+        }
+    }
+
+    var precomposedElementsFacebookTitle = document.querySelectorAll("meta[property='og:title']");
+    if(precomposedElementsFacebookTitle){
+        for (var i =0; i < precomposedElementsFacebookTitle.length;i++) {
+            var currentElement = precomposedElementsFacebookTitle[i];
+            currentElement.content = "22222";
+        }
+    }
+	
+	
 </script>
 </body>
 </html>
