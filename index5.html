@@ -32,7 +32,7 @@ test 10
 </div>
 
 <script>
-	History.pushState({state:1}, "test1", "?state=7"+1);
+	History.pushState({state:1}, "test1", "?state=7");
 	
 </script>
  <script>
@@ -65,13 +65,13 @@ test 10
      
      function clicke1(){
      	
-     	History.replaceState({state:1}, "test1", "?state=7");
+     	History.replaceState({state:1}, "test1", "?state=7"+2);
      	
       	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
     if(precomposedElementsFacebookCon){
         for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
             var currentElement = precomposedElementsFacebookCon[i];
-            currentElement.content = "res/icons/00_benriy_256.png";
+            currentElement.content = "res/icons/02_pitapat_256.png";
         }
     }
 
@@ -79,7 +79,7 @@ test 10
     if(precomposedElementsFacebookTitle){
         for (var i =0; i < precomposedElementsFacebookTitle.length;i++) {
             var currentElement = precomposedElementsFacebookTitle[i];
-            currentElement.content = "1111";
+            currentElement.content = "33333";
         }
     }
       	
