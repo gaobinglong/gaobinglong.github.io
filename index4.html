@@ -37,20 +37,63 @@ test 20
 <script>
 	History.pushState({state:1}, "test1", "?state=20");
 	
+	var index = {name:"", enable:true,gameid:"benriya_kannjyou",description:"?",icon:"08_warikan_"};
 	
-      	var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
+    document.title = index.description;
+
+    var baseUrl = History.getBaseUrl();
+
+    var path = cc.game.config["resPath"];
+
+    var precomposedElements = document.querySelectorAll("link[rel='apple-touch-icon-precomposed']");
+
+    var normalTouchIconLength = precomposedElements.length;
+    var currentElement;
+
+    for (var i =0; i < normalTouchIconLength;i++) {
+        currentElement = precomposedElements[i];
+        var outer;//180x180, 57x57, 72x72, 114x114, 144x144
+        if (currentElement.hasAttribute('sizes')) {
+            var outer =  currentElement.outerHTML;
+            if(outer.indexOf("57x57") > 0){
+                currentElement.href = baseUrl + path + "res/icons/"+index.icon+"57.png";
+            }else if(outer.indexOf("72x72") > 0){
+                currentElement.href = baseUrl + path + "res/icons/"+index.icon+"72.png";
+            }else if(outer.indexOf("114x114") > 0){
+                currentElement.href = baseUrl + path + "res/icons/"+index.icon+"114.png";
+            }else if(outer.indexOf("144x144") > 0){
+                currentElement.href = baseUrl + path + "res/icons/"+index.icon+"144.png";
+            }
+        } else {
+            currentElement.href = baseUrl + path + "res/icons/"+index.icon+"180.png";
+        }
+
+        //var info = {'sizes':size, 'rel': currentElement.rel, 'href': currentElement.href};
+        //cc.log(currentElement);
+    }
+
+
+    var precomposedElementsAos = document.querySelectorAll("link[rel='icon']");
+    if(precomposedElementsAos){
+        for (var i =0; i < precomposedElementsAos.length;i++) {
+            currentElement = precomposedElementsAos[i];
+            currentElement.href = baseUrl + path + "res/icons/"+index.icon+"256.png";
+        }
+    }
+
+    var precomposedElementsFacebookCon = document.querySelectorAll("meta[property='og:image']");
     if(precomposedElementsFacebookCon){
         for (var i =0; i < precomposedElementsFacebookCon.length;i++) {
-            var currentElement = precomposedElementsFacebookCon[i];
-            currentElement.content = "http://minigame.hangame.co.jp/benriya/enter/../res/icons/01_fun_256.png";
+            currentElement = precomposedElementsFacebookCon[i];
+            currentElement.content = baseUrl + path + "res/icons/"+index.icon+"256.png";
         }
     }
 
     var precomposedElementsFacebookTitle = document.querySelectorAll("meta[property='og:title']");
     if(precomposedElementsFacebookTitle){
         for (var i =0; i < precomposedElementsFacebookTitle.length;i++) {
-            var currentElement = precomposedElementsFacebookTitle[i];
-            currentElement.content = "22222";
+            currentElement = precomposedElementsFacebookTitle[i];
+            currentElement.content = index.description;
         }
     }
 	
